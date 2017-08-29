@@ -1,11 +1,38 @@
 import React, { Component } from 'react'
+import axios from 'axios'
+
 
 class AddForm extends Component {
+  constructor(props) {
+    super(props)
+    this.state = this.props
+    this.url = '/api/characters'
+
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit = (e)=> {
+    const url = this.url
+    const { name, age } = this.state
+    e.preventDefault()
+    axios.post(url, {
+      name,
+      age,
+    })
+    .then( response => {
+      console.log(response)
+    })
+    .catch( err => {
+      console.error(new Error(err))
+    })
+
+  }
+
   render() {
     const { name, age, onChangeName, onChangeAge } = this.props
 console.log(this.props)
     return (<div>
-        <form>
+        <form onSubmit={e=> this.handleSubmit(e)}>
           <label>
             Name:
             <input
@@ -22,6 +49,7 @@ console.log(this.props)
               onChange={ onChangeAge }
             />
           </label>
+          <button>submit</button>
         </form>
       </div>)
 
