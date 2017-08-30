@@ -31,7 +31,7 @@ class AddForm extends Component {
   }
 
   render() {
-    const { name, age, onChangeName, onChangeAge, onInitialForm } = this.props
+    const { name, age, onChangeName, onChangeAge } = this.props
 // console.log(this.props)
     return (<div>
         <form onSubmit={e=> this.handleSubmit(e)}>

@@ -31,4 +31,11 @@ mongoose.connect(dbUrl, err => {
     })
     // response.status(200).send(request.body)
   })
+
+  app.get(url, (request, response)=> {
+    Character.find({}, (err, characterArray) => {
+      if (err) response.status(500).send(err)
+      else response.status(200).send(characterArray)
+    })
+  })
 })
