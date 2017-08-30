@@ -38,4 +38,17 @@ mongoose.connect(dbUrl, err => {
       else response.status(200).send(characterArray)
     })
   })
+
+  app.put(url, (request, response)=> {
+    const { id } = request.body
+    Character.findByIdAndUpdate(id, {$inc: {age: 1}}, err => {
+      if(err) response.status(500).send(err)
+      else {
+        Character.find({}, (err, characterArray)=> {
+          if (err) response.status(500).send(err)
+          else response.status(200).send(characterArray)
+        })
+      }
+    })
+  })
 })
