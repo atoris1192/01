@@ -12,19 +12,24 @@ class AddForm extends Component {
   }
 
   handleSubmit = (e)=> {
+    const { onRequestData, onReceiveDataSuccess, onReceiveDataFailed } = this.props
     const url = this.url
     const { name, age, onInitialForm } = this.props
     console.log(this.props)
     e.preventDefault()
+    onRequestData()
     axios.post(url, {
       name,
       age,
     })
     .then( response => {
       onInitialForm()
-      console.log(response.data)
+      const _characterArray = response.data
+      onReceiveDataSuccess(_characterArray)
+      // console.log(response.data)
     })
     .catch( err => {
+      onReceiveDataFailed()
       console.error(new Error(err))
     })
 

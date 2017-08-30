@@ -21,13 +21,19 @@ mongoose.connect(dbUrl, err => {
 
   app.post(url, (request, response)=> {
     const { name, age } = request.body
-    console.log(request.body)
+    // console.log(request.body)
     Character({
       name: name,
       age: age,
     }).save( err => {
       if (err) response.status(500).send(err)
-      else response.status(200).send(`${name}: ${age} db created!!!`)
+      else {
+        Character.find({}, (err, characterArray)=> {
+          if(err) response.status(500).send(err)
+          else response.status(200).send(characterArray)
+        })
+      }
+      // else response.status(200).send(`${name}: ${age} db created!!!`)
     })
     // response.status(200).send(request.body)
   })
