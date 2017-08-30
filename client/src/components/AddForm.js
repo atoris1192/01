@@ -5,7 +5,7 @@ import axios from 'axios'
 class AddForm extends Component {
   constructor(props) {
     super(props)
-    this.state = this.props
+    this.state = {}
     this.url = '/api/characters'
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -13,14 +13,16 @@ class AddForm extends Component {
 
   handleSubmit = (e)=> {
     const url = this.url
-    const { name, age } = this.state
+    const { name, age, onInitialForm } = this.props
+    console.log(this.props)
     e.preventDefault()
     axios.post(url, {
       name,
       age,
     })
     .then( response => {
-      console.log(response)
+      onInitialForm()
+      console.log(response.data)
     })
     .catch( err => {
       console.error(new Error(err))
@@ -29,8 +31,8 @@ class AddForm extends Component {
   }
 
   render() {
-    const { name, age, onChangeName, onChangeAge } = this.props
-console.log(this.props)
+    const { name, age, onChangeName, onChangeAge, onInitialForm } = this.props
+// console.log(this.props)
     return (<div>
         <form onSubmit={e=> this.handleSubmit(e)}>
           <label>
