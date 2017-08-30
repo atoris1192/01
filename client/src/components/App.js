@@ -22,6 +22,7 @@ export default connect(
     name: state.form.name,
     age: state.form.age,
     characterArray: state.characters.characterArray,
+    isFetching: state.characters.isFetching,
   }),
   dispatch => ({
     onChangeName(e) { dispatch(changeName(e.target.value)) },

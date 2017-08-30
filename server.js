@@ -51,4 +51,17 @@ mongoose.connect(dbUrl, err => {
       }
     })
   })
+
+  app.delete(url, (req, res)=> {
+    const { id } = req.body
+    Character.findByIdAndRemove(id, (err)=> {
+      if (err) res.status(500).send(err)
+      else {
+        Character.find({}, (err, characterArray)=> {
+          if(err) res.status(500).send(err)
+          else res.status(200).send(characterArray)
+        })
+      }
+    })
+  })
 })

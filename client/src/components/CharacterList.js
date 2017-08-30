@@ -8,7 +8,29 @@ class CharacterList extends Component {
     this.url = '/api/characters'
     this.handleFetchCharacter = this.handleFetchCharacter.bind(this)
     this.handleIncAge = this.handleIncAge.bind(this)
+    this.handleDeleteCharacter = this.handleDeleteCharacter.bind(this)
   }
+  handleDeleteCharacter = (id)=> {
+    const { onRequestData, onReceiveDataSuccess, onReceiveDataFailed } = this.props
+    const url = this.url
+    onRequestData()
+    axios({
+      method: 'delete',
+      url: url,
+      data: {
+        id: id,
+      }
+    })
+    .then( res => {
+      const _characterArray = res.data
+      onReceiveDataSuccess(_characterArray)
+    })
+    .catch( err => {
+      console.error(new Error(err))
+      onReceiveDataFailed()
+    })
+  }
+
   handleIncAge = (id)=> {
     const { onReceiveDataSuccess, onReceiveDataFailed, onRequestData } = this.props
     const url = this.url
@@ -42,20 +64,27 @@ class CharacterList extends Component {
   }
 
   render() {
-    const { characterArray } = this.props
+    const { characterArray, isFetching } = this.props
 // console.log(this.props.characterArray)
     return (<div>
-      <button onClick={ (e)=> this.handleFetchCharacter(e)}>Fetch data</button>
-      <ul>
       {
-        characterArray.map( (value)=> (
-          <li key={value._id}>
-            <span>{ value.name } : { value.age }</span>
-            <button onClick={e => this.handleIncAge(value._id)}>+</button>
-          </li>
-        ))
+        isFetching
+        ? <h2>Now Loading...</h2>
+        : <div>
+         <button onClick={ (e)=> this.handleFetchCharacter(e)}>Fetch data</button>
+          <ul>
+            {
+              characterArray.map( (value)=> (
+                <li key={value._id}>
+                  <span>{ value.name } : { value.age }</span>
+                  <button onClick={e => this.handleIncAge(value._id)}>+</button>
+                  <button onClick={e => this.handleDeleteCharacter(value._id)}>Delete</button>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       }
-      </ul>
     </div>)
   }
 }
